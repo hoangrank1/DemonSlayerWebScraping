@@ -62,6 +62,7 @@ app.get("/v1/:character", (req, response) => {
   let currentUrl = characterUrl + req.params.character;
   const titles = [];
   const details = [];
+  const galleries = [];
   const characters = [];
   const characterObj = {};
 
@@ -69,6 +70,11 @@ app.get("/v1/:character", (req, response) => {
     axios(currentUrl).then((res) => {
       const html = res.data;
       const $ = cheerio.load(html);
+
+      $(".wikia-gallery-item", html).each(function() {
+        const gallery = $(this).find("a > img").attr("data-src");
+        galleries.push(gallery);
+      });
 
       //class name will put "." before the name like: .portal
       $("aside", html).each(function() {
@@ -96,6 +102,7 @@ app.get("/v1/:character", (req, response) => {
           }
           characters.push({
             image: image,
+            galleries: galleries,
             ...characterObj,
           });
         }
