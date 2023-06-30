@@ -29,7 +29,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 
-app.get("/v1", (req, res) => {
+app.get("/v1", (req, response) => {
+  const thumbnails = [];
   try {
     axios(url).then((res) => {
       const html = res.data;
@@ -38,11 +39,16 @@ app.get("/v1", (req, res) => {
         const name = $(this).find("a").attr("title"); // this point to class portal
         const wiki = $(this).find("a").attr("href");
         const image = $(this).find("a > img").attr("data-src");
-        console.log(`name: ${name}, wiki: ${wiki}, image: ${image}`);
+        thumbnails.push({
+          name: name,
+          wiki: "http://localhost:3001/v1" + wiki.split("/wiki")[1],
+          image: image,
+        });
       });
+      response.status(200).json(thumbnails);
     });
   } catch(err) {
-    res.status(500).json(err);
+    response.status(500).json(err);
   }
 })
 
