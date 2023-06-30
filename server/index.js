@@ -72,6 +72,9 @@ app.get("/v1/:character", (req, response) => {
 
       //class name will put "." before the name like: .portal
       $("aside", html).each(function() {
+        // Get image
+        const image = $(this).find("img").attr("src");
+
         // Get the title of chracter
         $(this)
           .find("section > div > h3")
@@ -86,12 +89,16 @@ app.get("/v1/:character", (req, response) => {
             details.push($(this).text());
           });
 
-        for (let i = 0; i < titles.length; i++) {
-          characterObj[titles[i]] = details[i];
+        if (image !== undefined) {
+          // Create object with title as key and detail as value
+          for (let i = 0; i < titles.length; i++) {
+            characterObj[titles[i]] = details[i];
+          }
+          characters.push({
+            image: image,
+            ...characterObj,
+          });
         }
-        characters.push({
-          ...characterObj,
-        })
       });
       response.status(200).json(characters);
     });
