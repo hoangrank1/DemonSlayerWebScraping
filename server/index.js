@@ -43,7 +43,7 @@ app.get("/v1", (req, response) => {
         const image = $(this).find("a > img").attr("data-src");
         thumbnails.push({
           name: name,
-          wiki: "http://localhost:3001/v1" + wiki.split("/wiki")[1],
+          wiki: "https://kimetsunoyaibascraping.onrender.com/v1" + wiki.split("/wiki")[1],
           image: image,
         });
       });
