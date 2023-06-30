@@ -61,19 +61,31 @@ app.get("/v1", (req, response) => {
 app.get("/v1/:character", (req, response) => {
   let currentUrl = characterUrl + req.params.character;
   const titles = [];
+  const details = [];
 
   try {
     axios(currentUrl).then((res) => {
       const html = res.data;
       const $ = cheerio.load(html);
+
       //class name will put "." before the name like: .portal
-      // Get the title of chracter detail
       $("aside", html).each(function() {
-        $(this).find("section > div > h3").each(function() {
-          titles.push($(this).text());
-        })
+        // Get the title of chracter
+        $(this)
+          .find("section > div > h3")
+          .each(function() {
+            titles.push($(this).text());
+          });
+
+        // Get the information of the character's title
+        $(this)
+          .find("section > div > div")
+          .each(function() {
+            details.push($(this).text());
+          });
       });
       console.log(titles);
+      console.log(details);
     });
   } catch(err) {
     response.status(500).json(err);
