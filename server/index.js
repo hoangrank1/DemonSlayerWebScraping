@@ -98,9 +98,10 @@ app.get("/v1/:character", (req, response) => {
         if (image !== undefined) {
           // Create object with title as key and detail as value
           for (let i = 0; i < titles.length; i++) {
-            characterObj[titles[i]] = details[i];
+            characterObj[titles[i].toLowerCase()] = details[i];
           }
           characters.push({
+            name: req.params.character.replace("_"," "),
             image: image,
             galleries: galleries,
             ...characterObj,
