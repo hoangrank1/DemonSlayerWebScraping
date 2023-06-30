@@ -12,5 +12,7 @@ To be more specific:
 /v1/:character: will be the link of detailed information of each selected character
 
 Here are 2 sites used for scraping:
+
 https://kimetsu-no-yaiba.fandom.com/wiki/Kimetsu_no_Yaiba_Wiki
+
 https://kimetsu-no-yaiba.fandom.com/wiki/
