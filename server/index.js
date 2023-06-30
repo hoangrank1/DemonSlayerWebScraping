@@ -36,7 +36,9 @@ app.get("/v1", (req, res) => {
       const $ = cheerio.load(html);
       $(".portal", html).each(function() {
         const name = $(this).find("a").attr("title"); // this point to class portal
-        console.log(name);
+        const wiki = $(this).find("a").attr("href");
+        const image = $(this).find("a > img").attr("data-src");
+        console.log(`name: ${name}, wiki: ${wiki}, image: ${image}`);
       });
     });
   } catch(err) {
