@@ -31,6 +31,8 @@ app.use(cors());
 
 app.get("/v1", (req, response) => {
   const thumbnails = [];
+  const limit = Number(req.query.limit);
+
   try {
     axios(url).then((res) => {
       const html = res.data;
@@ -45,7 +47,11 @@ app.get("/v1", (req, response) => {
           image: image,
         });
       });
-      response.status(200).json(thumbnails);
+      if (limit && limit > 0) {
+        response.status(200).json(thumbnails.slice(0, limit));
+      } else {
+        response.status(200).json(thumbnails);
+      }
     });
   } catch(err) {
     response.status(500).json(err);
