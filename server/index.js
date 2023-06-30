@@ -56,7 +56,29 @@ app.get("/v1", (req, response) => {
   } catch(err) {
     response.status(500).json(err);
   }
-})
+});
+
+app.get("/v1/:character", (req, response) => {
+  let currentUrl = characterUrl + req.params.character;
+  const titles = [];
+
+  try {
+    axios(currentUrl).then((res) => {
+      const html = res.data;
+      const $ = cheerio.load(html);
+      //class name will put "." before the name like: .portal
+      // Get the title of chracter detail
+      $("aside", html).each(function() {
+        $(this).find("section > div > h3").each(function() {
+          titles.push($(this).text());
+        })
+      });
+      console.log(titles);
+    });
+  } catch(err) {
+    response.status(500).json(err);
+  }
+});
 
 const PORT = process.env.PORT || 6001;
 app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
