@@ -62,6 +62,8 @@ app.get("/v1/:character", (req, response) => {
   let currentUrl = characterUrl + req.params.character;
   const titles = [];
   const details = [];
+  const characters = [];
+  const characterObj = {};
 
   try {
     axios(currentUrl).then((res) => {
@@ -83,9 +85,15 @@ app.get("/v1/:character", (req, response) => {
           .each(function() {
             details.push($(this).text());
           });
+
+        for (let i = 0; i < titles.length; i++) {
+          characterObj[titles[i]] = details[i];
+        }
+        characters.push({
+          ...characterObj,
+        })
       });
-      console.log(titles);
-      console.log(details);
+      response.status(200).json(characters);
     });
   } catch(err) {
     response.status(500).json(err);
